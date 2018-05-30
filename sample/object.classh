@@ -1,0 +1,21 @@
+
+class object {
+  class=""
+  obj_name=""
+
+  def exist? {
+    [ -d "$BOO_ROOT/${class}/$obj_name"] && return $EX_OK || return $EX_UNAVAILABLE
+  }
+
+  def get {
+    self.exist? || return $EX_UNAVAILABLE
+    echo self.$2
+    return $EX_OK
+  }
+
+  def set {
+    self.exist? || return $EX_UNAVAILABLE
+    self.${1}=$2
+    return $EX_OK
+  }
+}
