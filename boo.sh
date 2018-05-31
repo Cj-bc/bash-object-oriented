@@ -22,6 +22,10 @@ class_name="${1%.*}"
 # 2. parse codes & separate into method files
 # 3. collect fields
 # 4. chmod 2.
+mkdir -p ${BOO_ROOT}/class/${class_name}
+
+
+touch "$BOO_ROOT/class/${class_name}/fields"
 
 while read line; do
   if [[ "$line" =~ "def "* ]];then
