@@ -39,13 +39,13 @@ while read line; do
   else
     :
   fi
-for method_name in "fields" ${defs[@]}; do
-  touch ${BOO_ROOT}/class/${class_name}/${method_name}
-done
-
 done < $target
 
 flag=0
 while read line; do
-  if [ $flag -eq 1 ];then
-    if [ "$line" = "end"]
+  [[ "$line" =~ "def "* ]] && flag=0 && break
+  [[ "$line" =~ "class "* ]] && flag=1 && continue
+  if [ $flag -eq 1 ]; then
+    echo "$line" >> ${BOO_ROOT}/class/${class_name}/fields
+  fi
+done < $target
