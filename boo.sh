@@ -10,8 +10,8 @@
 import standard
 
 # check some settings
-if [ -d "$BOO_ROOT" ] || return $EX_OSFILE
-[ -f "$1" ] && target=$1 || return $EX_DATAERR
+[ -d "$BOO_ROOT" ] || error "BOO_ROOT: doesn't exist." && return $EX_OSFILE
+[ -f "$1" ] && target=$1 || error "given file doesn't exist" && return $EX_DATAERR
 
 target="$1"
 class_name="${1%.*}"
