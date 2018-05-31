@@ -27,17 +27,23 @@ mkdir -p ${BOO_ROOT}/class/${class_name}
 
 touch "$BOO_ROOT/class/${class_name}/fields"
 
+flag=0
 while read line; do
-  if [[ "$line" =~ "def "* ]];then
+  if [ $flag -eq 1 ];then
+    [ "$line" =~ ^"end" ] && flag=0 && break
+    echo "$line" >> $method_path
+  elif [ $flag -eq 0 ] && [[ "$line" =~ "def "* ]]; then
     line=($line)
-    defs=(${defs[@]} ${line[1]})
+    method_path="${BOO_ROOT}/class/$class_name}/${line[1]}"
+    flag=1
+  else
+    :
   fi
-done < boss.class.sh
-
 for method_name in "fields" ${defs[@]}; do
   touch ${BOO_ROOT}/class/${class_name}/${method_name}
 done
 
+done < $target
 
 flag=0
 while read line; do
