@@ -19,11 +19,9 @@ class_name="${1%.*}"
 
 # make some files for  class
 # 1. make class dir
-# 2. collect method name
-# 3. touch files based on 2.
-# 4. parse codes
-# 5. write methods into files made at 3.
-mkdir ${BOO_ROOT}/class/${class_name}
+# 2. parse codes & separate into method files
+# 3. collect fields
+# 4. chmod 2.
 
 while read line; do
   if [[ "$line" =~ "def "* ]];then
