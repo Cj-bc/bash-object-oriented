@@ -8,6 +8,7 @@
 # copyright (c) 2018 Cj-bc
 
 import standard
+import user:booFunc
 
 # check some settings
 [ -d "$BOO_ROOT" ] || error "BOO_ROOT: doesn't exist." && return $EX_OSFILE
@@ -22,10 +23,9 @@ class_name="${1%.*}"
 # 2. parse codes & separate into method files
 # 3. collect fields
 # 4. chmod 2.
+# 5. convret all codes into traditional shellscript
 mkdir -p ${BOO_ROOT}/class/${class_name}
 
-
-touch "$BOO_ROOT/class/${class_name}/fields"
 
 flag=0
 while read line; do
@@ -35,6 +35,7 @@ while read line; do
   elif [ $flag -eq 0 ] && [[ "$line" =~ "def "* ]]; then
     line=($line)
     method_path="${BOO_ROOT}/class/$class_name}/${line[1]}"
+    methods=(${methods[@]} ${line[1]})
     flag=1
   else
     :
@@ -49,3 +50,9 @@ while read line; do
     echo "$line" >> ${BOO_ROOT}/class/${class_name}/fields
   fi
 done < $target
+
+chmod 744 ${BOO_ROOT}/class/${class_name}/*
+
+for method in ${methods[@]}; do
+  boo_convert $method
+done
